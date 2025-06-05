@@ -14,7 +14,7 @@ public class Person{
      * The value of id is unique and greater than 0
      * If the value is not valid, set it to 1
      */
-    private int id;
+    private String id;
 
     private String name;
 
@@ -29,19 +29,18 @@ public class Person{
      */
     private int yearOfBirth;
 
-    public Person(int id, String name, boolean gender, int yearOfBirth){
+    public Person(String id, String name, boolean gender, int yearOfBirth){
         this.id = id;
         this.name = name;
         this.gender = gender;
         this.yearOfBirth = yearOfBirth;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
-        if(id <= 0) id = 1;
+    public void setId(String id) {
         this.id = id;
     }
 

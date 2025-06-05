@@ -14,7 +14,7 @@ public class Candidate extends Person {
     private ArrayList<Aspiration> listAspiration;
     private String homeTown;
 
-    public Candidate(int id, String name, boolean gender, int yearOfBirth, double examinationScore, double priorityScore, ArrayList<Aspiration> listAspi,String homeTown) {
+    public Candidate(String id, String name, boolean gender, int yearOfBirth, double examinationScore, double priorityScore, ArrayList<Aspiration> listAspi,String homeTown) {
         super(id, name, gender, yearOfBirth);
         this.examinationScore = examinationScore;
         this.priorityScore = priorityScore;

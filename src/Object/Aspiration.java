@@ -99,7 +99,7 @@ public class Aspiration {
     }
 
     public void printInf(){
-        System.out.println("----------------------------------------------------");
+        System.out.println("\n----------------------------------------------------");
         System.out.println("----       ~~ Aspiration Information ~~         ----");
         System.out.println("----------------------------------------------------");
         System.out.println("---------Aspiration ID: " + aspirationID);
@@ -108,7 +108,7 @@ public class Aspiration {
         System.out.println("---------Field Name: " + fieldName);
         System.out.println("---------Admission Group: " + admissionGroup);
         System.out.println("---------Floor Score: " + floorScore);
-        System.out.println("----------------------------------------------------");
+        System.out.println("----------------------------------------------------\n");
     }
 
 }

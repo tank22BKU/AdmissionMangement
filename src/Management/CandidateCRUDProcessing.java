@@ -61,7 +61,7 @@ public class CandidateCRUDProcessing {
             System.out.println("----------------------------------------------------------------------");
             if(listCandidate == null) listCandidate = new ArrayList<Candidate>();
 
-            int id;
+            String id;
             String fullName;
             String gender;
             int yearOfBirth;
@@ -70,14 +70,19 @@ public class CandidateCRUDProcessing {
             double priorityScore;
             ArrayList<Aspiration> listAspiration = null;
 
-            if(listCandidate.isEmpty()) id = 1;
-            else id = listCandidate.getLast().getId() + 1;
+            System.out.println("\n~~~Please enter the ID of the candidate! (String)~~~");
+            id = sc.next(); sc.nextLine();
+            //if match any element in the List return
+            if (listCandidate.stream().anyMatch(obj -> obj.getId().equals(id)) ){
+                System.out.println("!!! This ID : " + id + " already exists in the list !!!");
+                return listCandidate;
+            }
 
             System.out.println("\n~~~Please enter the full name of the candidate! (String)~~~");
             fullName = sc.nextLine();
 
             System.out.println("\n~~~Please enter the gender of the candidate! (male/female)~~~");
-            gender = sc.next();
+            gender = sc.next(); sc.nextLine();
             boolean Gender = gender.equals("female");
 
             System.out.println("\n~~~Please enter the yearOfBirth of the candidate! (int)~~~");
@@ -110,8 +115,146 @@ public class CandidateCRUDProcessing {
      */
 
     public static ArrayList<Candidate> modifyCandidate(ArrayList<Candidate> listCandidate){
+        try{
+            if(listCandidate == null || listCandidate.isEmpty()) {
+                System.out.println("!!! There are no candidate in List !!!");
+                return listCandidate;
+            }
+
+            System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            System.out.println("~~~ Please enter the id of the candidate need to Modify data (String) ~~~");
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            String candidateID = sc.next(); sc.nextLine();
+
+            System.out.println("\n~~~ Step1: Please enter which attributes needed to modify data (string)~~~");
+            System.out.println("~~~ 1. Name (String)                                                    ~~~");
+            System.out.println("~~~ 2. Gender (String : male/female)                                    ~~~");
+            System.out.println("~~~ 3. YearOfBirth (int)                                                ~~~");
+            System.out.println("~~~ 4. ExaminationScore (double)                                        ~~~");
+            System.out.println("~~~ 5. PriorityScore (double)                                           ~~~");
+            System.out.println("~~~ 6. HomeTown (String)                                                ~~~");
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+
+            int key = sc.nextInt(); sc.nextLine();
+            return switch (key) {
+                case 1 -> modifyCandidateName(listCandidate, candidateID);
+                case 2 -> modifyCandidateGender(listCandidate, candidateID);
+                case 3 -> modifyCandidateYearOfBirth(listCandidate, candidateID);
+                case 4 -> modifyCandidateExaminationScore(listCandidate, candidateID);
+                case 5 -> modifyCandidatePriorityScore(listCandidate, candidateID);
+                case 6 -> modifyCandidateHomeTown(listCandidate, candidateID);
+                default -> listCandidate;
+            };
+        } catch (InputMismatchException e){
+            System.out.println("!!!! Input in modifyCandidate is invalid !!!!" + e.getMessage());
+        }
+
         return listCandidate;
     }
+
+    private static ArrayList<Candidate> modifyCandidateName(ArrayList<Candidate> listCandidate, String candidateID) {
+        try{
+            System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            System.out.println("~~~ Please enter the NEW NAME of the candidate               (String) ~~~");
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            String newName = sc.nextLine();
+
+            listCandidate.stream().filter(candidate -> candidate.getId().equals(candidateID))
+                    .forEach(candidate -> candidate.setName(newName));
+
+            return listCandidate;
+        } catch (InputMismatchException e){
+            System.out.println("!!!! Input in modifyCandidateName is invalid !!!!" + e.getMessage());
+        }
+        return listCandidate;
+    }
+
+    private static ArrayList<Candidate> modifyCandidateGender(ArrayList<Candidate> listCandidate, String candidateID) {
+        try{
+            System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            System.out.println("~~~ Please enter the NEW Gender of the candidate             (String) ~~~");
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            String newGender = sc.next(); sc.nextLine();
+            boolean genderExists = newGender.equals("female");
+
+            listCandidate.stream().filter(candidate -> candidate.getId().equals(candidateID))
+                    .forEach(candidate -> candidate.setGender(genderExists));
+
+            return listCandidate;
+        } catch (InputMismatchException e){
+            System.out.println("!!!! Input in modifyCandidateName is invalid !!!!" + e.getMessage());
+        }
+        return listCandidate;
+    }
+
+    private static ArrayList<Candidate> modifyCandidateYearOfBirth(ArrayList<Candidate> listCandidate, String candidateID) {
+        try{
+            System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            System.out.println("~~~ Please enter the NEW Year of Birth of the candidate      (String) ~~~");
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            int newYOB = sc.nextInt(); sc.nextLine();
+
+            listCandidate.stream().filter(candidate -> candidate.getId().equals(candidateID))
+                    .forEach(candidate -> candidate.setYearOfBirth(newYOB));
+
+            return listCandidate;
+        } catch (InputMismatchException e){
+            System.out.println("!!!! Input in modifyCandidateName is invalid !!!!" + e.getMessage());
+        }
+        return listCandidate;
+    }
+
+    private static ArrayList<Candidate> modifyCandidateExaminationScore(ArrayList<Candidate> listCandidate, String candidateID) {
+        try{
+            System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            System.out.println("~~~ Please enter the NEW ExaminationScore of the candidate   (String) ~~~");
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            double newExaminationScore = sc.nextInt(); sc.nextLine();
+
+            listCandidate.stream().filter(candidate -> candidate.getId().equals(candidateID))
+                    .forEach(candidate -> candidate.setExaminationScore(newExaminationScore));
+
+            return listCandidate;
+        } catch (InputMismatchException e){
+            System.out.println("!!!! Input in modifyCandidateName is invalid !!!!" + e.getMessage());
+        }
+        return listCandidate;
+    }
+
+    private static ArrayList<Candidate> modifyCandidatePriorityScore(ArrayList<Candidate> listCandidate, String candidateID) {
+        try{
+            System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            System.out.println("~~~ Please enter the NEW ExaminationScore of the candidate   (String) ~~~");
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            double newPriorityScore = sc.nextInt(); sc.nextLine();
+
+            listCandidate.stream().filter(candidate -> candidate.getId().equals(candidateID))
+                    .forEach(candidate -> candidate.setPriorityScore(newPriorityScore));
+
+            return listCandidate;
+        } catch (InputMismatchException e){
+            System.out.println("!!!! Input in modifyCandidateName is invalid !!!!" + e.getMessage());
+        }
+        return listCandidate;
+    }
+
+    private static ArrayList<Candidate> modifyCandidateHomeTown(ArrayList<Candidate> listCandidate, String candidateID) {
+        try{
+            System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            System.out.println("~~~ Please enter the NEW NAME of the candidate               (String) ~~~");
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            String newHomeTown = sc.nextLine();
+
+            listCandidate.stream().filter(candidate -> candidate.getId().equals(candidateID))
+                    .forEach(candidate -> candidate.setHomeTown(newHomeTown));
+
+            return listCandidate;
+        } catch (InputMismatchException e){
+            System.out.println("!!!! Input in modifyCandidateName is invalid !!!!" + e.getMessage());
+        }
+        return listCandidate;
+    }
+
 
 
     /*
@@ -127,13 +270,20 @@ public class CandidateCRUDProcessing {
             System.out.println("----------------------                          ----------------------");
             System.out.println("----------------------------------------------------------------------");
 
-            System.out.println("\n~~~ Please enter the id of the candidate need to remove! (int)~~~");
-            int id = sc.nextInt(); sc.nextLine();
+            System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            System.out.println("~~~ Please enter the id of the candidate need to remove      (String) ~~~");
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            String id = sc.next();
 
             if(listCandidate == null ||listCandidate.isEmpty()) {
                 System.out.println("There is no candidate to remove");
                 return listCandidate;
             }
+
+            listCandidate.stream().filter(candidate -> candidate.getId().equals(id))
+                    .findFirst().ifPresent(listCandidate::remove);
+
+            return listCandidate;
 
         } catch (InputMismatchException e){
             System.out.println("Input in deleteCandidate is mismatch" + e.getMessage());
@@ -174,18 +324,18 @@ public class CandidateCRUDProcessing {
             }
 
             System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-            System.out.println("~~~ Please enter the id of the candidate need to add Aspiration (int) ~~~");
+            System.out.println("~~~Please enter the id of the candidate need to add Aspiration(String)~~~");
             System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-            int id = sc.nextInt(); sc.nextLine();
+            String id = sc.next(); sc.nextLine();
 
-            System.out.println("SIze : " + listCandidate.size() );
-
-            if(id > listCandidate.size() || id <= 0){
+            if(id.isEmpty()){
                 System.out.println("!!!! The index is in valid !!!!" );
                 return listCandidate;
             }
-            ArrayList<Aspiration> listAspiration = listCandidate.get(id-1).getListAspiration();
-            listCandidate.get(id-1).setListAspiration(AspirationProcessing.addAspiration(listAspiration));
+
+            listCandidate.stream().filter(candidate -> candidate.getId().equals(id))
+                    .findFirst()
+                    .ifPresent(candidate -> candidate.setListAspiration(AspirationProcessing.addAspiration(candidate.getListAspiration())));
 
             return listCandidate;
         } catch (NullPointerException e){
@@ -207,19 +357,26 @@ public class CandidateCRUDProcessing {
         try{
             if(listCandidate == null || listCandidate.isEmpty()) {
                 System.out.println("\n!!!! There are no candidates in the list !!!!");
+                return listCandidate;
             }
 
             System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-            System.out.println("~~~ Please enter the id of the candidate need to remove Aspiration (int) ~~~");
+            System.out.println("~Please enter the id of the candidate need to remove Aspiration(String)~~");
             System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-            int id = sc.nextInt(); sc.nextLine();
+            String id = sc.next();
 
-            ArrayList<Aspiration> listAspiration = listCandidate.get(id-1).getListAspiration();
+            ArrayList<Aspiration> listAspiration = null;
+            for(Candidate candidate : listCandidate){
+                if(candidate.getId().equals(id)){
+                    listAspiration = candidate.getListAspiration();
+                }
+            }
+
             if(listAspiration == null || listAspiration.isEmpty()) {
                 System.out.println("!!!! There is no Aspiration to delete !!!!" );
                 return listCandidate;
             }
-            if(id > listCandidate.size() || id <= 0){
+            if(id.isEmpty()){
                 System.out.println("!!!! The index is in valid !!!!" );
                 return listCandidate;
             }
@@ -230,10 +387,12 @@ public class CandidateCRUDProcessing {
             listAspiration.removeIf(asp -> asp.getAspirationID() == aspirationID);
 
             //Update the entire ListAspiration ID
+            ArrayList<Aspiration> finalListAspiration = listAspiration;
             listAspiration.forEach(asp -> {
-                asp.setAspirationID(listAspiration.indexOf(asp) + 1);
+                asp.setAspirationID(finalListAspiration.indexOf(asp) + 1);
             });
-            listCandidate.get(id-1).setListAspiration(listAspiration);
+            listCandidate.stream().filter(candidate -> candidate.getId().equals(id)).
+                    forEach(candidate -> candidate.setListAspiration(finalListAspiration));
 
             return listCandidate;
         } catch(InputMismatchException e){
@@ -252,10 +411,7 @@ public class CandidateCRUDProcessing {
 
     public static void main(String[] args) {
         ArrayList<Candidate> listCandidate = addNewCandidate(null);
-        listCandidate = addNewAspirationForCandidate(listCandidate);
-        listCandidate = addNewAspirationForCandidate(listCandidate);
-        printListCandiate(listCandidate);
-        listCandidate = deleteAspirationForCandidate(listCandidate);
+        listCandidate = modifyCandidate(listCandidate);
         printListCandiate(listCandidate);
     }
 }

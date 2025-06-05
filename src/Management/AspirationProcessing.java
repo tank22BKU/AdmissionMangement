@@ -6,8 +6,6 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 import Object.AdmissionGroup;
 
-import static java.lang.Thread.sleep;
-
 public class AspirationProcessing {
 
     private static final Scanner sc = new Scanner(System.in);
@@ -290,21 +288,35 @@ public class AspirationProcessing {
 
     public static ArrayList<Aspiration> deleteAspiration(ArrayList<Aspiration> listAspiration, ArrayList<Candidate> listCandidate) {
         try{
+            System.out.println("\nPlease enter the ID of the Aspiration you want to delete...");
             int aspirationID = sc.nextInt();
 
             //if there is any Candidate have the aspirationID in their aspirationID then return
             //else remove aspiration from list aspiration
-            boolean isUsed = listCandidate.stream().anyMatch(candidate ->
-                    candidate.getListAspiration().stream().anyMatch(candidateAspiration ->
-                            candidateAspiration.getAspirationID() == aspirationID
-                    )
-            );
-            if(!isUsed) listAspiration.removeIf(asp -> asp.getAspirationID() == aspirationID);
+            boolean isUsed = false;
+            if(listCandidate != null){
+                isUsed = listCandidate.stream().anyMatch(candidate ->
+                        candidate.getListAspiration().stream().anyMatch(candidateAspiration ->
+                                candidateAspiration.getAspirationID() == aspirationID
+                        )
+                );
+            }
+
+            if(!isUsed) {
+                listAspiration.removeIf(asp -> asp.getAspirationID() == aspirationID);
+
+                //Update the entire ListAspiration ID
+                listAspiration.forEach(asp -> {
+                  asp.setAspirationID(listAspiration.indexOf(asp)+1);
+                });
+            }
 
             return listAspiration;
         } catch (InputMismatchException e){
             System.out.println("The input in deleteaspi not match the requirement !! " + e.getMessage());
             sc.nextLine();
+        } catch (NullPointerException e){
+            System.out.println("The pointer in deleteaspi is null!! " + e.getMessage());
         }
         return listAspiration;
     }
@@ -317,7 +329,10 @@ public class AspirationProcessing {
 
     public static void printListAspiration(ArrayList<Aspiration> listAspiration){
         try{
-
+            if(listAspiration != null || listAspiration.isEmpty()) {
+                System.out.println("\nThe list of Aspiration are empty!!\n");
+                return;
+            }
             listAspiration.forEach(asp -> asp.printInf());
 
         }catch(NullPointerException e){
@@ -447,24 +462,22 @@ public class AspirationProcessing {
      */
 
 
-    public static void main(String[] args) {
-        //Aspiration a = new Aspiration(1,101, "BKA" ,"Computer Science", AdmissionGroup.A00, 20.5);
-        try {
-            ArrayList<Aspiration> listAspiration = null; //new ArrayList<Aspiration>();
-            //listAspiration.add(a);
-            printListAspiration(listAspiration);
-            listAspiration = addAspiration(listAspiration);
-            listAspiration = addAspiration(listAspiration);
-            listAspiration = modifyAspiration(listAspiration);
-            printListAspiration(listAspiration);
-
-            sleep(3000);
-            searchForAspiration(listAspiration);
-        } catch (InputMismatchException | NullPointerException e) {
-            System.out.println("The input in main not match the requirement !! " + e.getMessage());
-        } catch (RuntimeException | InterruptedException e) {
-            System.out.println(e.getMessage());
-        }
-    }
+//    public static void main(String[] args) {
+//        //Aspiration a = new Aspiration(1,101, "BKA" ,"Computer Science", AdmissionGroup.A00, 20.5);
+//        try {
+//            ArrayList<Aspiration> listAspiration = null; //new ArrayList<Aspiration>();
+//            //listAspiration.add(a);
+//            printListAspiration(listAspiration);
+//            listAspiration = addAspiration(listAspiration);
+//
+//            listAspiration = deleteAspiration(listAspiration, null);
+//            printListAspiration(listAspiration);
+//
+//        } catch (InputMismatchException | NullPointerException e) {
+//            System.out.println("The input in main not match the requirement !! " + e.getMessage());
+//        } catch (RuntimeException e) {
+//            System.out.println(e.getMessage());
+//        }
+//    }
 
 }

@@ -1,6 +1,7 @@
 package DashBoard;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import Object.*;
 import Management.*;
@@ -8,9 +9,9 @@ import static java.lang.Thread.sleep;
 
 public class options {
 
-    static private ArrayList<Candidate> listCandidate;
-    static private ArrayList<Supervisor> listSupervisor;
-    static private ArrayList<Aspiration> listAspiration;
+    static private ArrayList<Candidate> listCandidate = new ArrayList<Candidate>();
+    static private ArrayList<Proctor> listProctor;
+    static private ArrayList<Aspiration> listAspiration = new ArrayList<Aspiration>();
 
     static void printOptions() {
         System.out.println("\n----------Welcome to AdmissionMangement System----------");
@@ -52,7 +53,7 @@ public class options {
             Scanner sc = new Scanner(System.in);
             while (sc.hasNextInt()) {
                 int value = sc.nextInt();
-                if(value < 1 || value > 17){
+                if(value < 1 || value > 17 ){
                     System.out.println("\nPlease enter a number between 1 and 17");
                     continue;
                 }
@@ -60,14 +61,14 @@ public class options {
                 System.out.println("\nYour choice is : " + value);
 
                 switch (value) {
-                    case 1: listAspiration = AspirationProcessing.gainCRUDRequest(listAspiration); break;
+                    case 1: listAspiration = AspirationProcessing.gainCRUDRequest(listAspiration,listCandidate); break;
                     case 2: AspirationProcessing.searchForAspiration(listAspiration); break;
                     case 3: AspirationProcessing.printListAspiration(listAspiration); break;
-                    case 4: CandidateCRUDProcessing.gainCRUDRequest(listCandidate); break;
-                    case 5: break;
-                    case 6: break;
+                    case 4: listCandidate = CandidateCRUDProcessing.gainCRUDRequest(listCandidate); break;
+                    case 5: listCandidate = CandidateCRUDProcessing.addNewAspirationForCandidate(listCandidate); break;
+                    case 6: listCandidate = CandidateCRUDProcessing.deleteAspirationForCandidate(listCandidate); break;
                     case 7: break;
-                    case 8: break;
+                    case 8: CandidateCRUDProcessing.printListCandiate(listCandidate); break;
                     case 9: break;
                     case 10: break;
                     case 11: break;
@@ -78,10 +79,13 @@ public class options {
                     case 16: break;
                     case 17: break;
                 }
-                sleep(3000);
+                sleep(1000);
                 printOptions();
             }
-        } catch (RuntimeException e) {
+        } catch (InputMismatchException e) {
+            System.out.println("\nQuang game !!! " + e.getMessage());
+        }
+        catch (RuntimeException e) {
             System.out.println("Runtime Exception: " + e.getMessage());
         }
 

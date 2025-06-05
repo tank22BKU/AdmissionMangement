@@ -29,6 +29,13 @@ public class Person{
      */
     private int yearOfBirth;
 
+    public Person(int id, String name, boolean gender, int yearOfBirth){
+        this.id = id;
+        this.name = name;
+        this.gender = gender;
+        this.yearOfBirth = yearOfBirth;
+    }
+
     public int getId() {
         return id;
     }
@@ -46,7 +53,7 @@ public class Person{
         this.name = name;
     }
 
-    public boolean isGender() {
+    public boolean getGender() {
         return gender;
     }
 

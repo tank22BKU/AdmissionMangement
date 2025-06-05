@@ -12,6 +12,15 @@ public class Candidate extends Person {
     private double examinationScore;
     private double priorityScore;
     private ArrayList<Aspiration> listAspiration;
+    private String homeTown;
+
+    public Candidate(int id, String name, boolean gender, int yearOfBirth, double examinationScore, double priorityScore, ArrayList<Aspiration> listAspi,String homeTown) {
+        super(id, name, gender, yearOfBirth);
+        this.examinationScore = examinationScore;
+        this.priorityScore = priorityScore;
+        this.listAspiration = listAspi;
+        this.homeTown = homeTown;
+    }
 
     public double getExaminationScore() {
         return examinationScore;
@@ -37,5 +46,31 @@ public class Candidate extends Person {
     public void setExaminationScore(double examinationScore) {
         if(this.examinationScore < 0) examinationScore = 0;
         this.examinationScore = examinationScore;
+    }
+
+    public String getHomeTown() {
+        return homeTown;
+    }
+
+    public void setHomeTown(String homeTown) {
+        this.homeTown = homeTown;
+    }
+
+    public void printInf(){
+        System.out.println("\n+++++++++++++++++++++++++++++++++++++++++++++++++++");
+        System.out.println("++++       ~~ Candidate Information ~~          +++");
+        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++\n");
+        System.out.println("+++++++++Candidate ID: " + this.getId());
+        System.out.println("+++++++++Full name : " + this.getName());
+        System.out.println("+++++++++Gender : " + (this.getGender() ? "FEMALE" : "MALE"));
+        System.out.println("+++++++++Year of birth : " + this.getYearOfBirth());
+        System.out.println("+++++++++Home town : " + this.homeTown);
+        System.out.println("+++++++++Examination Score : " + this.examinationScore);
+        System.out.println("+++++++++Priority Score : " + this.priorityScore);
+
+        if(this.listAspiration != null) this.listAspiration.forEach(a -> a.printInf());
+        else System.out.println("---------This candidate has not signed any aspirations");
+
+        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
     }
 }

@@ -38,7 +38,8 @@ public class options {
                         "14.Sắp xếp danh sách trúng tuyển theo Nguyện vọng (Sắp xếp giảm dần theo điểm thi)\n" +
                         "15.Ghi file danh sách Thí sinh trúng tuyển theo từng Mã nguyện vọng\n" +
                         "16.Đọc file danh sách Giám thị và lưu vào danh sách Giám thị\n" +
-                        "17.Đọc file danh sách Thí sinh và lưu vào danh sách Thí sinh\n"
+                        "17.Đọc file danh sách Thí sinh và lưu vào danh sách Thí sinh\n" +
+                        "0. Thoát"
         );
 
         System.out.println("----------------------------------------------------------");
@@ -51,9 +52,10 @@ public class options {
 
         try{
             Scanner sc = new Scanner(System.in);
+            boolean flag = false;
             while (sc.hasNextInt()) {
                 int value = sc.nextInt();
-                if(value < 1 || value > 17 ){
+                if(value < 0 || value > 17 ){
                     System.out.println("\nPlease enter a number between 1 and 17");
                     continue;
                 }
@@ -64,26 +66,28 @@ public class options {
                     case 1: listAspiration = AspirationProcessing.gainCRUDRequest(listAspiration,listCandidate); break;
                     case 2: AspirationProcessing.searchForAspiration(listAspiration); break;
                     case 3: AspirationProcessing.printListAspiration(listAspiration); break;
-                    case 4: listCandidate = CandidateCRUDProcessing.gainCRUDRequest(listCandidate); break;
-                    case 5: listCandidate = CandidateCRUDProcessing.addNewAspirationForCandidate(listCandidate); break;
-                    case 6: listCandidate = CandidateCRUDProcessing.deleteAspirationForCandidate(listCandidate); break;
-                    case 7: break;
-                    case 8: CandidateCRUDProcessing.printListCandiate(listCandidate); break;
-                    case 9: break;
-                    case 10: break;
-                    case 11: break;
-                    case 12: break;
-                    case 13: break;
-                    case 14: break;
-                    case 15: break;
-                    case 16: break;
-                    case 17: break;
+                    case 4: listCandidate = CandidateProcessing.gainCRUDRequest(listCandidate); break;
+                    case 5: listCandidate = CandidateProcessing.addNewAspirationForCandidate(listCandidate, listAspiration); break;
+                    case 6: listCandidate = CandidateProcessing.deleteAspirationForCandidate(listCandidate); break;
+                    case 7: CandidateProcessing.searchForCandidate(listCandidate); break;
+                    case 8: CandidateProcessing.printListCandiate(listCandidate); break;
+                    case 9: listProctor = ProctorProcessing.gainCRUDRequest(listProctor); break;
+                    case 10: ProctorProcessing.searchForProctor(listProctor); break;
+                    case 11: ProctorProcessing.printListProctor(listProctor); break;
+                    case 12,14: IOFileHandling.displayListCandidatePassExamFollowAspirationID(listCandidate); break;
+                    case 13: IOFileHandling.displayListCandidatePassExamFollowSchoolAndFieldID(listCandidate); break;
+                    case 15: IOFileHandling.WriteCandidatePassExamToFileFollowAspirationID(listCandidate); break;
+                    case 16: listProctor = IOFileHandling.streamProctorInput(listProctor); break;
+                    case 17: listCandidate = IOFileHandling.streamCandidateInput(listCandidate); break;
+                    case 0: flag = true; break;
                 }
+
+                if(flag) break;
                 sleep(1000);
                 printOptions();
             }
         } catch (InputMismatchException e) {
-            System.out.println("\nQuang game !!! " + e.getMessage());
+            System.out.println("Mismatch input in main board !!! " + e.getMessage());
         }
         catch (RuntimeException e) {
             System.out.println("Runtime Exception: " + e.getMessage());

@@ -16,6 +16,9 @@ public class Candidate extends Person {
 
     public Candidate(String id, String name, boolean gender, int yearOfBirth, double examinationScore, double priorityScore, ArrayList<Aspiration> listAspi,String homeTown) {
         super(id, name, gender, yearOfBirth);
+        if(examinationScore < 0) examinationScore = 0;
+        if(priorityScore < 0) priorityScore = 0;
+
         this.examinationScore = examinationScore;
         this.priorityScore = priorityScore;
         this.listAspiration = listAspi;

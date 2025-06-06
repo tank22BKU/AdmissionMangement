@@ -6,7 +6,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 import Object.Aspiration;
 
-public class CandidateCRUDProcessing {
+public class CandidateProcessing {
 
     public static final Scanner sc = new Scanner(System.in);
 
@@ -17,7 +17,7 @@ public class CandidateCRUDProcessing {
 
     public static ArrayList<Candidate> gainCRUDRequest(ArrayList<Candidate> listCandidate) {
         System.out.println("\n----------------------------------------------------------------");
-        System.out.println("---Gain Request for Adding, Modifying and Deleting Aspiration---");
+        System.out.println("---Gain Request for Adding, Modifying and Deleting Candidates---");
         System.out.println("----------------------------------------------------------------\n");
 
         System.out.println("\n----------------------------------------------------------------");
@@ -28,7 +28,7 @@ public class CandidateCRUDProcessing {
 
         //Scanner sc = new Scanner(System.in);
         try{
-            int choice = sc.nextInt();
+            int choice = sc.nextInt(); sc.nextLine();
             if (choice != 1 && choice != 2 && choice != 3) {
                 System.out.println("!!!! You have entered an invalid choice. !!!!");
             }
@@ -109,7 +109,7 @@ public class CandidateCRUDProcessing {
 
     /*
      * @ Modify group will include 7 methods below
-     * @ These methods will modify one Aspiration based on its ID
+     * @ These methods will modify one Candidate based on its ID
      * @ Then user notices the guide and types the field that user wants to modify
      * @ User follows this guide to type the options program needs
      */
@@ -126,7 +126,7 @@ public class CandidateCRUDProcessing {
             System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             String candidateID = sc.next(); sc.nextLine();
 
-            System.out.println("\n~~~ Step1: Please enter which attributes needed to modify data (string)~~~");
+            System.out.println("\n~~~ Step1: Please enter which attributes needed to modify data    (int)~~~");
             System.out.println("~~~ 1. Name (String)                                                    ~~~");
             System.out.println("~~~ 2. Gender (String : male/female)                                    ~~~");
             System.out.println("~~~ 3. YearOfBirth (int)                                                ~~~");
@@ -292,7 +292,7 @@ public class CandidateCRUDProcessing {
     }
 
     /*
-     * @ This method will print the Aspiration List based on user's requirements.
+     * @ This method will print the Candidate List based on user's requirements.
      * @ User can apply any changes if needed
      */
 
@@ -312,11 +312,11 @@ public class CandidateCRUDProcessing {
 
 
     /*
-     * @ This method will add new Aspiration into the Candidate's AspirationList
+     * @ This method will add new Candidate into the Candidate's AspirationList
      * @ input : candidateID
      */
 
-    public static ArrayList<Candidate> addNewAspirationForCandidate(ArrayList<Candidate> listCandidate){
+    public static ArrayList<Candidate> addNewAspirationForCandidate(ArrayList<Candidate> listCandidate, ArrayList<Aspiration> listAspiration){
         try{
             if(listCandidate == null || listCandidate.isEmpty()) {
                 System.out.println("\n!!!! There are no candidates in the list !!!!");
@@ -404,6 +404,142 @@ public class CandidateCRUDProcessing {
         return listCandidate;
     }
 
+
+    /*
+     * Finding Group include 5 methods, which finds appropriate Candidate based on its values
+     *  @
+     */
+
+    public static void searchForCandidate(ArrayList<Candidate> listCandidate){
+        try{
+            if(listCandidate == null || listCandidate.isEmpty()) {
+                System.out.println("\n!!!! There are no candidates in the list !!!!" );
+                return;
+            }
+
+            System.out.println("\n~~~ Step1: Please enter which attributes you want to find         (int)~~~");
+            System.out.println("~~~ 1. Name (String)                                                    ~~~");
+            System.out.println("~~~ 2. Gender (String : male/female)                                    ~~~");
+            System.out.println("~~~ 3. Candidate ID  (String)                                           ~~~");
+            System.out.println("~~~ 4. ExaminationScore (double)                                        ~~~");
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+
+            int key = sc.nextInt(); sc.nextLine();
+            switch(key){
+                case 1: searchForCandidateWithName(listCandidate); break;
+                case 2: searchForCandidateWithGender(listCandidate); break;
+                case 3: searchForCandidateWithID(listCandidate); break;
+                case 4: searchForCandidateWithExamScore(listCandidate); break;
+                default: return;
+            }
+
+        } catch(InputMismatchException e){
+            System.out.println("Input in searchForCandidate is invalid " + e.getMessage());
+        }
+    }
+
+    private static void searchForCandidateWithID(ArrayList<Candidate> listCandidate) {
+        try{
+            System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            System.out.println("~Please enter the ID of the candidate need to find             (String)~~");
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            String id = sc.next(); sc.nextLine();
+
+            boolean found = false;
+
+            found = listCandidate.stream().anyMatch(candidate -> candidate.getId().equals(id));
+
+            if(!found){
+                System.out.println("!!!! The ID of the candidate is not found !!!!" );
+                return;
+            }
+
+            listCandidate.stream().filter(candidate -> candidate.getId().equals(id))
+                    .findFirst().ifPresent(candidate -> candidate.printInf());
+
+        } catch(InputMismatchException e){
+            System.out.println("Input in searchForCandidateWithID is invalid " + e.getMessage());
+        }
+    }
+
+    private static void searchForCandidateWithName(ArrayList<Candidate> listCandidate) {
+        try{
+            System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            System.out.println("~Please enter the Name of the candidate need to find           (String)~~");
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            String name = sc.nextLine();
+
+            boolean found = false;
+
+            found = listCandidate.stream().anyMatch(candidate -> candidate.getId().equals(name));
+
+            if(!found){
+                System.out.println("!!!! The ID of the candidate is not found !!!!" );
+                return;
+            }
+
+            listCandidate.stream().filter(candidate -> candidate.getName().equals(name))
+                    .findFirst().ifPresent(candidate -> candidate.printInf());
+
+        } catch(InputMismatchException e){
+            System.out.println("Input in searchForCandidateWithID is invalid " + e.getMessage());
+        }
+    }
+
+    private static void searchForCandidateWithGender(ArrayList<Candidate> listCandidate) {
+        try{
+            System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            System.out.println("~~Please enter the Gender of the candidate need to find   (male/female)~~");
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            String gender = sc.next(); sc.nextLine();
+            boolean Gender = gender.equals("female");
+
+            boolean found = false;
+
+            found = listCandidate.stream().anyMatch(candidate -> candidate.getGender() == Gender);
+
+            if(!found){
+                System.out.println("!!!! The ID of the candidate is not found !!!!" );
+                return;
+            }
+
+            listCandidate.forEach(candidate -> {
+                if(candidate.getGender() == Gender){
+                    candidate.printInf();
+                }
+            });
+
+        } catch(InputMismatchException e){
+            System.out.println("Input in searchForCandidateWithID is invalid " + e.getMessage());
+        }
+    }
+
+    private static void searchForCandidateWithExamScore(ArrayList<Candidate> listCandidate) {
+        try{
+            System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            System.out.println("~Please enter the ExaminationScore of the candidate need to find  (int)~~");
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            double ExaminationScore = sc.nextDouble(); sc.nextLine();
+
+            boolean found = false;
+
+            found = listCandidate.stream().anyMatch(candidate -> candidate.getExaminationScore() == ExaminationScore);
+
+            if(!found){
+                System.out.println("!!!! The ID of the candidate is not found !!!!" );
+                return;
+            }
+
+            listCandidate.stream().filter(candidate -> candidate.getExaminationScore() == ExaminationScore)
+                    .findFirst().ifPresent(candidate -> candidate.printInf());
+
+        } catch(InputMismatchException e){
+            System.out.println("Input in searchForCandidateWithID is invalid " + e.getMessage());
+        }
+    }
+
+
+
     /*
      * This main method is created to test some methods above
      * User can make some changes to test method above if needed
@@ -411,8 +547,11 @@ public class CandidateCRUDProcessing {
 
     public static void main(String[] args) {
         ArrayList<Candidate> listCandidate = addNewCandidate(null);
-        listCandidate = modifyCandidate(listCandidate);
+        listCandidate = addNewCandidate(listCandidate);
+        listCandidate = addNewCandidate(listCandidate);
+        listCandidate = addNewCandidate(listCandidate);
         printListCandiate(listCandidate);
+        searchForCandidate(listCandidate);
     }
 }
 

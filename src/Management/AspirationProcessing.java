@@ -27,7 +27,7 @@ public class AspirationProcessing {
 
         //Scanner 
         try{
-            int choice = sc.nextInt();
+            int choice = sc.nextInt(); sc.nextLine();
             if (choice != 1 && choice != 2 && choice != 3) {
                 System.out.println("!!!! You have entered an invalid choice. !!!!");
             }
@@ -79,7 +79,10 @@ public class AspirationProcessing {
             //System.out.println("\n~~~Please enter Candidate ID (number) ~~~");
             //candidateID = sc.nextInt();
             System.out.println("\n~~~Please enter field ID (number) ~~~");
-            if(sc.hasNextInt()) fieldID = sc.nextInt();
+            if(sc.hasNextInt()) {
+                fieldID = sc.nextInt();
+                sc.nextLine();
+            }
             else {
                 System.out.println("!!!! You have typed an invalid field ID !!!!\n" + "Next to another process...");
                 return listAspiration;
@@ -93,7 +96,7 @@ public class AspirationProcessing {
             admissionGroup = sc.next();
             admissionGroup = admissionGroup.toLowerCase();
             System.out.println("~~~Please enter field Score (double)~~~");
-            floorScore = sc.nextDouble();
+            floorScore = sc.nextDouble(); sc.nextLine();
 
             aGroup = switch (admissionGroup) {
                 case "a00" -> AdmissionGroup.A00;
@@ -144,7 +147,7 @@ public class AspirationProcessing {
             //Scanner 
             //int candidateID = sc.nextInt();
             System.out.println("\n~~~Please enter Aspiration ID needed to modify data (number) ~~~");
-            int aspirationID = sc.nextInt();
+            int aspirationID = sc.nextInt(); sc.nextLine();
 
             System.out.println("\n~~~ Step1: Please enter which attributes needed to modify data (string)~~~");
             System.out.println("~~~ 1. fieldid (int)                                                    ~~~");
@@ -155,7 +158,7 @@ public class AspirationProcessing {
             System.out.println("~~~ 6. aspirationid (int)                                              ~~~");
             System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
-            int key = sc.nextInt();
+            int key = sc.nextInt(); sc.nextLine();
 
             System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             System.out.println("~~~ Step2: Please enter the new value fit to its type                   ~~~");
@@ -178,7 +181,7 @@ public class AspirationProcessing {
 
     private static ArrayList<Aspiration> modifyFloorScore(ArrayList<Aspiration> listAspiration, /*int candidateID,*/ int aspirationID) {
         try{
-            double floorScore = sc.nextDouble();
+            double floorScore = sc.nextDouble(); sc.nextLine();
 
             listAspiration.stream().filter(asp -> asp.getAspirationID() == aspirationID)
                         .findFirst().ifPresent(asp -> asp.setFloorScore(floorScore));
@@ -250,7 +253,7 @@ public class AspirationProcessing {
 
     private static ArrayList<Aspiration> modifyFieldID(ArrayList<Aspiration> listAspiration, /*int candidateID,*/ int aspirationID) {
         try{
-            int fieldName = sc.nextInt();
+            int fieldName = sc.nextInt(); sc.nextLine();
 
             listAspiration.stream().filter(asp -> asp.getAspirationID() == aspirationID)
                     .findFirst().ifPresent(asp -> asp.setFieldID(fieldName));
@@ -265,7 +268,7 @@ public class AspirationProcessing {
 
     public static ArrayList<Aspiration> modifyAspirationID(ArrayList<Aspiration> listAspiration, /*int candidateID,*/ int aspirationID) {
         try{
-            int newAspirationID = sc.nextInt();
+            int newAspirationID = sc.nextInt(); sc.nextLine();
 
             listAspiration.stream().filter(asp -> asp.getAspirationID() == aspirationID)
                     .findFirst().ifPresent(asp -> asp.setAspirationID(newAspirationID));
@@ -289,7 +292,7 @@ public class AspirationProcessing {
     public static ArrayList<Aspiration> deleteAspiration(ArrayList<Aspiration> listAspiration, ArrayList<Candidate> listCandidate) {
         try{
             System.out.println("\nPlease enter the ID of the Aspiration you want to delete...");
-            int aspirationID = sc.nextInt();
+            int aspirationID = sc.nextInt(); sc.nextLine();
 
             //if there is any Candidate have the aspirationID in their aspirationID then return
             //else remove aspiration from list aspiration
@@ -358,22 +361,22 @@ public class AspirationProcessing {
             System.out.println("~~~ 5. floorscore (double)                                              ~~~");
             System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
-            int key = sc.nextInt();
+            int key = sc.nextInt(); sc.nextLine();
 
             System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             System.out.println("~~~ Step2: Please enter the value you want to search for                ~~~");
             System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             switch (key) {
                 case 1:
-                    findFieldID(listAspiration);
+                    findFieldID(listAspiration); break;
                 case 2:
-                    findSchoolID(listAspiration);
+                    findSchoolID(listAspiration); break;
                 case 3:
-                    findFieldName(listAspiration);
+                    findFieldName(listAspiration); break;
                 case 4:
-                    findAdmissionGroup(listAspiration);
+                    findAdmissionGroup(listAspiration); break;
                 case 5:
-                    findFloorScore(listAspiration);
+                    findFloorScore(listAspiration); break;
                 default:
                     break;
             }
@@ -385,7 +388,14 @@ public class AspirationProcessing {
 
     private static void findFloorScore(ArrayList<Aspiration> listAspiration) {
         try{
-            double floorScore = sc.nextDouble();
+            double floorScore = sc.nextDouble(); sc.nextLine();
+
+            boolean has = listAspiration.stream().anyMatch(asp -> asp.getFloorScore() == floorScore);
+
+            if(!has) {
+                System.out.println("The floorScore is not found in the list");
+                return;
+            }
 
             listAspiration.stream().filter(asp -> asp.getFloorScore() >= floorScore)
                     .forEach(asp -> asp.printInf());
@@ -397,7 +407,7 @@ public class AspirationProcessing {
 
     private static void findAdmissionGroup(ArrayList<Aspiration> listAspiration) {
         try{
-            String admissionGroup = sc.next();
+            String admissionGroup = sc.next(); sc.nextLine();
             AdmissionGroup aGroup;
             aGroup= switch (admissionGroup){
                 case "a00" -> AdmissionGroup.A00;
@@ -412,6 +422,14 @@ public class AspirationProcessing {
             };
 
             AdmissionGroup finalAGroup = aGroup;
+
+            boolean has = listAspiration.stream().anyMatch(asp -> asp.getAdmissionGroup().equals(finalAGroup));
+
+            if(!has) {
+                System.out.println("The AdmissionGroup is not found in the list");
+                return;
+            }
+
             listAspiration.stream().filter(asp -> asp.getAdmissionGroup().equals(finalAGroup))
                     .forEach(asp -> asp.printInf());
 
@@ -422,7 +440,15 @@ public class AspirationProcessing {
 
     private static void findFieldName(ArrayList<Aspiration> listAspiration) {
         try{
-            String fieldName = sc.next();
+            String fieldName = sc.next(); sc.nextLine();
+
+            boolean has = listAspiration.stream().anyMatch(asp -> asp.getFieldName().equals(fieldName));
+
+            if(!has) {
+                System.out.println("The FieldID is not found in the list");
+                return;
+            }
+
             listAspiration.stream().filter(asp -> asp.getFieldName().equals(fieldName))
                     .forEach(asp -> asp.printInf());
         } catch (InputMismatchException | NullPointerException e){
@@ -433,7 +459,15 @@ public class AspirationProcessing {
 
     private static void findSchoolID(ArrayList<Aspiration> listAspiration) {
         try{
-            String schoolID = sc.next();
+            String schoolID = sc.next(); sc.nextLine();
+
+            boolean has = listAspiration.stream().anyMatch(asp -> asp.getSchoolID().equals(schoolID));
+
+            if(!has) {
+                System.out.println("The schoolID is not found in the list");
+                return;
+            }
+
             listAspiration.stream().filter(asp -> asp.getSchoolID().equals(schoolID))
                     .forEach(asp -> asp.printInf());
         } catch (InputMismatchException | NullPointerException e){
@@ -444,13 +478,14 @@ public class AspirationProcessing {
 
     private static void findFieldID(ArrayList<Aspiration> listAspiration) {
         try{
-            int fieldID = sc.nextInt();
+            int fieldID = sc.nextInt(); sc.nextLine();
             boolean has = listAspiration.stream().anyMatch(asp -> asp.getFieldID() == fieldID);
 
-
-            if(!has) System.out.println("The fieldID is not found in the list");
-            else listAspiration.stream().filter(asp -> asp.getFieldID() == fieldID)
-                    .forEach(asp -> asp.printInf());
+            if(!has) {
+                System.out.println("The fieldID is not found in the list");
+                return;
+            }
+            listAspiration.stream().filter(asp -> asp.getFieldID() == fieldID).forEach(asp -> asp.printInf());
         } catch (InputMismatchException | NullPointerException e){
             System.out.println("The input in findfieldid not match the requirement !! " + e.getMessage());
         }
